@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détail du produit</title>
     <link rel="stylesheet" href="style.css">
-    <script src="panier.js"></script>
+    <script src="panier.js" defer></script>
 </head>
 <body class="body_produit">
     <header class="header_panier">
@@ -16,7 +16,9 @@
         </nav>
     </header>
     <main class="main_panier">
-        <div id="productDetails" class="tab_item2"></div>
+        <div class="tab_item2">
+            <div id="productDetails"></div>
+        </div>
     </main>
 </body>
 </html>

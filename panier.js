@@ -4,8 +4,11 @@ function fetchAndDisplayCartItems() {
     const productDetails = document.getElementById('productDetails');
     productDetails.innerHTML = '';
     const quantities = JSON.parse(localStorage.getItem('itemQuantities')) || {};
+    let hasItems = false;
+
     Object.keys(quantities).forEach(itemId => {
         if (quantities[itemId] > 0) {
+            hasItems = true;
             fetch(`https://api.kedufront.juniortaker.com/item/${itemId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -28,7 +31,14 @@ function fetchAndDisplayCartItems() {
                 });
         }
     });
+
     cleanUpQuantities();
+
+    if (hasItems) {
+        appendCheckoutButton();
+    } else {
+        removeCheckoutButton();
+    }
 }
 
 function adjustQuantity(itemId, change) {
@@ -41,7 +51,6 @@ function adjustQuantity(itemId, change) {
         delete quantities[itemId];
     }
     localStorage.setItem('itemQuantities', JSON.stringify(quantities));
-
     fetchAndDisplayCartItems();
 }
 
@@ -53,4 +62,25 @@ function cleanUpQuantities() {
         }
     });
     localStorage.setItem('itemQuantities', JSON.stringify(quantities));
+}
+
+function appendCheckoutButton() {
+    let checkoutButton = document.getElementById('checkoutButton');
+    if (!checkoutButton) {
+        const tabItem2 = document.querySelector('.tab_item2');
+        checkoutButton = document.createElement('button');
+        checkoutButton.id = 'checkoutButton';
+        checkoutButton.textContent = 'Valider ma commande';
+        checkoutButton.addEventListener('click', function() {
+            window.location.href = 'commande.html';
+        });
+        tabItem2.appendChild(checkoutButton);
+    }
+}
+
+function removeCheckoutButton() {
+    const checkoutButton = document.getElementById('checkoutButton');
+    if (checkoutButton) {
+        checkoutButton.remove();
+    }
 }
